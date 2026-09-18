@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Price Checker | Easy Phone Value Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Simple Top Navigation Header -->
+    <header class="top-nav">
+        <div class="nav-container">
+            <div class="brand-block">
+                <div class="logo-box">₹</div>
+                <div>
+                    <h1 class="brand-title">Mobile Price Checker</h1>
+                    <span class="brand-tagline">Find the fair market price of any mobile phone in seconds</span>
+                </div>
+            </div>
+            <div class="nav-status-group">
+                <a href="/" class="btn-nav-back">← Home & Buyer's Guide</a>
+                <div class="status-indicator online" id="system-status">
+                    <span class="status-dot"></span> System Ready
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-wrapper">
+        <!-- 3-Step Simple Guide for Non-Tech Users -->
+        <section class="how-it-works-strip">
+            <div class="step-item">
+                <span class="step-num">1</span>
+                <div class="step-text">
+                    <strong>Pick or Adjust Specs</strong>
+                    <span>Choose RAM, storage, battery or click a preset</span>
+                </div>
+            </div>
+            <div class="step-arrow">&rarr;</div>
+            <div class="step-item">
+                <span class="step-num">2</span>
+                <div class="step-text">
+                    <strong>Click Calculate</strong>
+                    <span>Our system analyzes current Indian market prices</span>
+                </div>
+            </div>
+            <div class="step-arrow">&rarr;</div>
+            <div class="step-item">
+                <span class="step-num">3</span>
+                <div class="step-text">
+                    <strong>Get Fair Price</strong>
+                    <span>See the estimated price and best usage category</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick 1-Click Phone Profiles -->
+        <section class="presets-section">
+            <div class="presets-header">
+                <span class="presets-title">⚡ Or Pick a Common Phone Type:</span>
+                <span class="presets-sub">Click one to automatically fill all specifications</span>
+            </div>
+            <div class="presets-btn-group">
+                <button type="button" class="btn-preset" onclick="applyPreset('budget')">
+                    <strong>Basic Daily Phone</strong> (~₹8,999)
+                </button>
+                <button type="button" class="btn-preset active-preset" onclick="applyPreset('midrange')">
+                    <strong>All-Rounder Phone</strong> (~₹21,999)
+                </button>
+                <button type="button" class="btn-preset" onclick="applyPreset('gaming')">
+                    <strong>Gamer / Creator</strong> (~₹38,999)
+                </button>
+                <button type="button" class="btn-preset" onclick="applyPreset('flagship')">
+                    <strong>Ultra Flagship</strong> (~₹74,999)
+                </button>
+            </div>
+        </section>
+
+        <!-- Main Dashboard Grid -->
+        <div class="content-grid">
+            <!-- Left: Specifications Input Form -->
+            <div class="panel form-panel">
+                <div class="panel-header">
+                    <h2>Select Phone Features</h2>
+                    <p>Change any feature below to match the phone you are buying or selling.</p>
+                </div>
+
+                <form id="prediction-form" class="spec-form">
+                    <!-- Memory & Storage Group -->
+                    <fieldset class="form-section">
+                        <legend>Memory & App Speed</legend>
+                        <div class="form-row">
+                            <div class="field-box">
+                                <label for="ram_gb">RAM Memory (Smoothness)</label>
+                                <select id="ram_gb" name="ram_gb" required>
+                                    <option value="2">2 GB (Very basic calling)</option>
+                                    <option value="3">3 GB (Light daily use)</option>
+                                    <option value="4">4 GB (Standard apps & WhatsApp)</option>
+                                    <option value="6" selected>6 GB (Smooth multitasking - Recommended)</option>
+                                    <option value="8">8 GB (Fast gaming & heavy apps)</option>
+                                    <option value="12">12 GB (Pro gaming & speed)</option>
+                                    <option value="16">16 GB (Maximum performance)</option>
+                                </select>
+                                <span class="input-hint">💡 6GB is the sweet spot for most users today.</span>
+                            </div>
+
+                            <div class="field-box">
+                                <label for="storage_gb">Storage Space (Photos & Videos)</label>
+                                <select id="storage_gb" name="storage_gb" required>
+                                    <option value="16">16 GB (Very limited space)</option>
+                                    <option value="32">32 GB (Basic apps only)</option>
+                                    <option value="64">64 GB (Around 15,000 photos)</option>
+                                    <option value="128" selected>128 GB (Around 30,000 photos - Most Popular)</option>
+                                    <option value="256">256 GB (Huge storage for 4K video)</option>
+                                    <option value="512">512 GB (Massive storage)</option>
+                                </select>
+                                <span class="input-hint">💡 128GB gives plenty of room without filling up.</span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="field-box">
+                                <label for="cpu_cores">Processor Type (Brain of the phone)</label>
+                                <select id="cpu_cores" name="cpu_cores" required>
+                                    <option value="2">Dual-Core (Simple basic phone)</option>
+                                    <option value="4">Quad-Core (Entry-level)</option>
+                                    <option value="6">Hexa-Core (Balanced speed)</option>
+                                    <option value="8" selected>Octa-Core (Fast & modern - 8 Cores)</option>
+                                </select>
+                            </div>
+
+                            <div class="field-box">
+                                <label for="cpu_speed_ghz">Processor Speed Level</label>
+                                <select id="cpu_speed_ghz" name="cpu_speed_ghz" required>
+                                    <option value="1.6">1.6 GHz (Normal speed)</option>
+                                    <option value="2.0">2.0 GHz (Good everyday speed)</option>
+                                    <option value="2.4" selected>2.4 GHz (Fast app loading)</option>
+                                    <option value="2.8">2.8 GHz (High-speed gaming)</option>
+                                    <option value="3.2">3.2 GHz (Ultra flagship speed)</option>
+                                </select>
+                                <span class="input-hint">💡 Higher speed opens apps quicker.</span>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Camera & Battery Group -->
+                    <fieldset class="form-section">
+                        <legend>Cameras & Battery Life</legend>
+                        <div class="form-row">
+                            <div class="field-box">
+                                <label for="primary_camera_mp">Back Camera (Photos)</label>
+                                <select id="primary_camera_mp" name="primary_camera_mp" required>
+                                    <option value="13">13 MP (Clear daylight photos)</option>
+                                    <option value="48">48 MP (High detail photos)</option>
+                                    <option value="50" selected>50 MP (Modern standard - Great detail)</option>
+                                    <option value="64">64 MP (Crisp photography)</option>
+                                    <option value="108">108 MP (Pro-grade ultra high detail)</option>
+                                </select>
+                            </div>
+
+                            <div class="field-box">
+                                <label for="front_camera_mp">Front Selfie Camera</label>
+                                <select id="front_camera_mp" name="front_camera_mp" required>
+                                    <option value="5">5 MP (Basic video calls)</option>
+                                    <option value="8">8 MP (Standard selfies)</option>
+                                    <option value="16" selected>16 MP (Clear selfies & HD video calls)</option>
+                                    <option value="32">32 MP (Crisp social media selfies)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="field-box full-width">
+                                <label for="battery_mah">Battery Size (How long it lasts)</label>
+                                <select id="battery_mah" name="battery_mah" required>
+                                    <option value="3000">3000 mAh (Half day use)</option>
+                                    <option value="4000">4000 mAh (Normal full day)</option>
+                                    <option value="5000" selected>5000 mAh (Full day + heavy use - Most Common)</option>
+                                    <option value="6000">6000 mAh (Extra long 1.5 to 2 days life)</option>
+                                </select>
+                                <span class="input-hint">💡 5000 mAh easily powers through an entire day of travel or work.</span>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Display & Connectivity -->
+                    <fieldset class="form-section">
+                        <legend>Screen & Network</legend>
+                        <div class="form-row">
+                            <div class="field-box">
+                                <label for="screen_size_inch">Screen Display Size</label>
+                                <select id="screen_size_inch" name="screen_size_inch" required>
+                                    <option value="6.1">6.1 Inches (Compact & easy one-hand hold)</option>
+                                    <option value="6.5" selected>6.5 Inches (Standard modern screen size)</option>
+                                    <option value="6.7">6.7 Inches (Large display for movies & games)</option>
+                                    <option value="6.8">6.8 Inches (Extra large display)</option>
+                                </select>
+                            </div>
+
+                            <div class="field-box checkbox-field">
+                                <label for="has_5g" class="checkbox-label">
+                                    <input type="checkbox" id="has_5g" name="has_5g" checked>
+                                    <span><strong>Include 5G Network Support</strong></span>
+                                </label>
+                                <span class="input-hint" style="margin-left: 30px;">Recommended for future-proof fast internet.</span>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-calculate" id="submit-btn">
+                            <span class="btn-label">🔍 Calculate Fair Market Price</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Right: Valuation Result Panel -->
+            <div class="panel result-panel">
+                <div class="panel-header">
+                    <h2>Estimated Fair Market Value</h2>
+                    <p>Based on genuine Indian smartphone retail pricing.</p>
+                </div>
+
+                <div id="result-placeholder" class="empty-state">
+                    <div class="empty-illustration">🏷️</div>
+                    <h3>Ready to Check Value</h3>
+                    <p>Select your phone options on the left and tap the orange <strong>"Calculate Fair Market Price"</strong> button.</p>
+                </div>
+
+                <div id="result-content" class="valuation-content" style="display: none;">
+                    <div class="tier-tag" id="tier-badge">Mid-Range (Best Value)</div>
+                    
+                    <div class="price-container">
+                        <span class="currency-symbol">₹</span>
+                        <span class="price-amount" id="price-inr">0</span>
+                    </div>
+                    <div class="price-subtitle">Estimated Fair New Retail Price (All taxes included)</div>
+
+                    <!-- Plain English User Recommendation -->
+                    <div class="use-case-box" id="use-case-box">
+                        <span class="use-case-icon">💡</span>
+                        <div class="use-case-text">
+                            <strong>What this phone is best for:</strong>
+                            <p id="use-case-desc">Perfect for everyday browsing, social media, smooth YouTube streaming, and casual games.</p>
+                        </div>
+                    </div>
+
+                    <div class="storage-notice" id="db-sync-box">
+                        <span class="check-icon">✓</span>
+                        <span id="db-sync-text">Result saved to your history below</span>
+                    </div>
+
+                    <div class="specs-recap">
+                        <h3>Phone Feature Summary</h3>
+                        <div class="specs-grid" id="summary-chips">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Records Section (Simplified for Non-Tech Users) -->
+        <section class="panel history-panel">
+            <div class="panel-header table-header-flex">
+                <div>
+                    <h2>📋 Your Recent Price Checks</h2>
+                    <p>Past searches are automatically saved below so you can easily compare phones.</p>
+                </div>
+                <button type="button" class="btn-reload" onclick="loadHistory()">🔄 Refresh List</button>
+            </div>
+
+            <div class="mobile-table-hint">Swipe sideways on your screen to view all details &rarr;</div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Memory & Storage</th>
+                            <th>Battery Life</th>
+                            <th>Photo Quality</th>
+                            <th>Speed</th>
+                            <th>5G?</th>
+                            <th>Estimated Price</th>
+                            <th>Phone Category</th>
+                            <th>Saved When</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-tbody">
+                        <tr>
+                            <td colspan="10" class="empty-table-cell">Loading your saved checks...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <div id="toast" class="toast-message"></div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
