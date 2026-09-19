@@ -8,7 +8,10 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-SQLITE_PATH = os.path.join(Config.BASE_DIR, "mobile_price_db.sqlite")
+if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
+    SQLITE_PATH = "/tmp/mobile_price_db.sqlite"
+else:
+    SQLITE_PATH = os.path.join(Config.BASE_DIR, "mobile_price_db.sqlite")
 
 def get_mysql_connection(with_db=True):
     """Attempt connecting to MySQL Server."""
