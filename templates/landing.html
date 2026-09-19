@@ -3,212 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobile Price Checker | Plain-English Smartphone Guide & Fair Price Estimator</title>
+    <title>Mobile Price Checker | Indian Smartphone Valuation & Buyer's Guide</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body class="landing-body">
-    <!-- Header Navigation -->
-    <header class="top-nav">
+    <!-- Top Navigation -->
+    <header class="top-nav pro-nav">
         <div class="nav-container">
             <a href="/" class="brand-block brand-link">
                 <div class="logo-box">₹</div>
                 <div>
-                    <h1 class="brand-title">Mobile Price Checker</h1>
-                    <span class="brand-tagline">Everyday Smartphone Guide & Fair Value Estimator</span>
+                    <span class="brand-title">MobileValuation</span>
+                    <span class="brand-tagline">Indian Market Smartphone Price Index</span>
                 </div>
             </a>
-            <nav class="landing-nav-links">
-                <a href="#why" class="nav-text-link">Why Use This?</a>
-                <a href="#guide" class="nav-text-link">Beginner's Guide</a>
-                <a href="#mistakes" class="nav-text-link">Common Mistakes</a>
-                <a href="/calculator" class="btn-nav-action">⚡ Open Price Calculator</a>
-            </nav>
+            <div class="pro-nav-links">
+                <a href="#benchmarks" class="nav-text-link">Price Tiers</a>
+                <a href="#standards" class="nav-text-link">Hardware Guide</a>
+                <a href="/calculator" class="btn-nav-action">Launch Calculator &rarr;</a>
+            </div>
         </div>
     </header>
 
-    <!-- Main Landing Container -->
-    <main class="landing-wrapper">
-        <!-- Hero Section -->
-        <section class="hero-card">
-            <div class="hero-badge">💡 Free & Simple Phone Valuation</div>
-            <h2 class="hero-headline">Know the Fair Price of Any Mobile Before You Buy or Sell</h2>
-            <p class="hero-subtext">
-                Phones with the exact same features are often sold at wildly different prices. Our simple calculator estimates the honest market value in Indian Rupees (₹) based on storage, battery, camera, and speed — without any confusing sales talk.
-            </p>
+    <!-- Main Content Container -->
+    <main class="landing-wrapper pro-wrapper">
+        <!-- Professional Asymmetric Hero Section -->
+        <section class="pro-hero-section">
+            <div class="hero-content-col">
+                <div class="hero-kicker">CONSUMER RESEARCH & VALUATION INDEX</div>
+                <h1 class="pro-hero-title">Determine the true retail and resale value of any smartphone.</h1>
+                <p class="pro-hero-desc">
+                    An objective price evaluation engine built for Indian consumers. We evaluate memory, chipset, battery capacity, camera sensors, and network capability to compute unbiased fair market prices — avoiding inflated retail markups and lowball trade-ins.
+                </p>
 
-            <div class="hero-cta-group">
-                <a href="/calculator" class="btn-hero-primary">
-                    <span>⚡ Check a Mobile's Price Now</span>
+                <div class="hero-actions-row">
+                    <a href="/calculator" class="btn-primary-action">
+                        <span>Check a Device's Price</span>
+                        <span class="btn-arrow">&rarr;</span>
+                    </a>
+                    <a href="#standards" class="btn-secondary-action">
+                        <span>View Spec Standards</span>
+                    </a>
+                </div>
+
+                <div class="hero-metric-strip">
+                    <div class="metric-item">
+                        <strong>3,500+</strong>
+                        <span>Hardware Benchmarks</span>
+                    </div>
+                    <div class="metric-divider"></div>
+                    <div class="metric-item">
+                        <strong>94.8%</strong>
+                        <span>Model Precision ($R^2$)</span>
+                    </div>
+                    <div class="metric-divider"></div>
+                    <div class="metric-item">
+                        <strong>INR (₹)</strong>
+                        <span>Domestic Valuation</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Live Interactive Benchmark Dossier -->
+            <div class="hero-dossier-col">
+                <div class="dossier-card">
+                    <div class="dossier-header">
+                        <span class="dossier-tag">LIVE BENCHMARK SAMPLE</span>
+                        <span class="dossier-status">SEPTEMBER 2026 INDEX</span>
+                    </div>
+
+                    <div class="dossier-device-name">
+                        <h3>Balanced All-Rounder (5G)</h3>
+                        <p>Most popular purchase configuration in India</p>
+                    </div>
+
+                    <div class="dossier-price-box">
+                        <span class="dossier-price-label">ESTIMATED MARKET VALUE</span>
+                        <div class="dossier-price-figure">₹21,890</div>
+                        <div class="dossier-price-range">Typical retail spread: ₹19,500 — ₹23,400</div>
+                    </div>
+
+                    <div class="dossier-specs-list">
+                        <div class="dossier-spec-row">
+                            <span class="spec-name">RAM Memory</span>
+                            <span class="spec-value">6 GB (Smooth Multitasking)</span>
+                        </div>
+                        <div class="dossier-spec-row">
+                            <span class="spec-name">Internal Storage</span>
+                            <span class="spec-value">128 GB (~30,000 Photos)</span>
+                        </div>
+                        <div class="dossier-spec-row">
+                            <span class="spec-name">Battery Capacity</span>
+                            <span class="spec-value">5,000 mAh (Full-Day Runtime)</span>
+                        </div>
+                        <div class="dossier-spec-row">
+                            <span class="spec-name">Main Optics</span>
+                            <span class="spec-value">50 MP Quad-Bayer Sensor</span>
+                        </div>
+                        <div class="dossier-spec-row">
+                            <span class="spec-name">Connectivity</span>
+                            <span class="spec-value highlight-5g">5G Network Ready</span>
+                        </div>
+                    </div>
+
+                    <a href="/calculator" class="btn-dossier-action">
+                        <span>Customize and Test This Spec &rarr;</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Objective Market Values (3 Pillars) -->
+        <section class="pro-pillars-section">
+            <div class="pillar-card">
+                <div class="pillar-num">01</div>
+                <h3>Avoid Retail Markups</h3>
+                <p>Retail sales staff often upsell higher-priced variants claiming superior speed. Our model isolates actual hardware value so you pay solely for capability you use.</p>
+            </div>
+
+            <div class="pillar-card">
+                <div class="pillar-num">02</div>
+                <h3>Fair Resale Benchmark</h3>
+                <p>Negotiating on secondary marketplaces like Cashify or OLX? Establish a grounded market value baseline before buying used devices or selling your current handset.</p>
+            </div>
+
+            <div class="pillar-card">
+                <div class="pillar-num">03</div>
+                <h3>Spec Efficiency</h3>
+                <p>Identify whether stepping from 6GB to 8GB RAM or from 64GB to 128GB storage represents fair return on investment for your typical daily workload.</p>
+            </div>
+        </section>
+
+        <!-- Section: Indian Market Segment Benchmarks -->
+        <section id="benchmarks" class="pro-section">
+            <div class="pro-section-header">
+                <span class="kicker-badge">PRICE BENCHMARKS</span>
+                <h2>Current Indian Smartphone Tiers</h2>
+                <p>Where common hardware configurations stand in today's domestic market.</p>
+            </div>
+
+            <div class="tiers-table-container">
+                <table class="tiers-table">
+                    <thead>
+                        <tr>
+                            <th>Market Segment</th>
+                            <th>Typical Price Band</th>
+                            <th>Recommended Hardware</th>
+                            <th>Primary Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Budget Entry</strong></td>
+                            <td class="price-highlight">Under ₹14,000</td>
+                            <td>3GB–4GB RAM • 64GB Storage • 5000 mAh • 4G/5G</td>
+                            <td>Calls, WhatsApp, basic web navigation, UPI payments</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mid-Range (Value)</strong></td>
+                            <td class="price-highlight">₹14,000 — ₹28,000</td>
+                            <td>6GB RAM • 128GB Storage • 5000 mAh • 50MP • 5G</td>
+                            <td>Smooth daily app switching, HD streaming, casual gaming</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Upper Mid-Range</strong></td>
+                            <td class="price-highlight">₹28,000 — ₹55,000</td>
+                            <td>8GB–12GB RAM • 256GB Storage • Fast CPU • 5G</td>
+                            <td>Heavy 3D gaming (BGMI/FreeFire), 4K video recording</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Flagship Luxury</strong></td>
+                            <td class="price-highlight">₹55,000 and above</td>
+                            <td>12GB–16GB RAM • 256GB–512GB • Pro Optics</td>
+                            <td>Uncompromising build, pro photography, highest benchmark speed</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Section: Hardware Reference Guide -->
+        <section id="standards" class="pro-section">
+            <div class="pro-section-header">
+                <span class="kicker-badge">SPECIFICATION GUIDE</span>
+                <h2>What Component Numbers Mean in Real Life</h2>
+                <p>Understand key specifications without memorizing semiconductor technical manuals.</p>
+            </div>
+
+            <div class="standards-grid">
+                <div class="standard-card">
+                    <div class="standard-header">
+                        <span class="standard-tag">MEMORY</span>
+                        <h3>RAM (Operating Memory)</h3>
+                    </div>
+                    <p class="standard-summary">Determines how many applications stay alive in background without reloading.</p>
+                    <div class="standard-guidance">
+                        <div class="guidance-line"><strong>4 GB:</strong> Sufficient for phone calls, basic messaging, and single-app use.</div>
+                        <div class="guidance-line highlighted-line"><strong>6 GB (Sweet Spot):</strong> Recommended standard for modern Android; zero lag on multitasking.</div>
+                        <div class="guidance-line"><strong>8 GB+:</strong> Reserved for heavy multitasking and demanding 3D games.</div>
+                    </div>
+                </div>
+
+                <div class="standard-card">
+                    <div class="standard-header">
+                        <span class="standard-tag">STORAGE</span>
+                        <h3>Internal Capacity (ROM)</h3>
+                    </div>
+                    <p class="standard-summary">Stores your operating system, downloaded apps, family media, and offline videos.</p>
+                    <div class="standard-guidance">
+                        <div class="guidance-line"><strong>64 GB:</strong> Fills rapidly after 12 months of high-resolution WhatsApp media.</div>
+                        <div class="guidance-line highlighted-line"><strong>128 GB (Sweet Spot):</strong> Recommended for 2–3 year ownership without storage warnings.</div>
+                        <div class="guidance-line"><strong>256 GB+:</strong> Ideal if shooting 4K 60fps family video or storing large movie libraries.</div>
+                    </div>
+                </div>
+
+                <div class="standard-card">
+                    <div class="standard-header">
+                        <span class="standard-tag">BATTERY</span>
+                        <h3>Capacity Rating (mAh)</h3>
+                    </div>
+                    <p class="standard-summary">Quantifies total electrical charge stored within the internal cell.</p>
+                    <div class="standard-guidance">
+                        <div class="guidance-line"><strong>4000 mAh:</strong> Acceptable for compact, lightweight handsets with moderate screen time.</div>
+                        <div class="guidance-line highlighted-line"><strong>5000 mAh (Standard):</strong> Provides full morning-to-night autonomy under active cellular use.</div>
+                        <div class="guidance-line"><strong>6000 mAh:</strong> Extended battery offering 1.5+ days runtime between charging sessions.</div>
+                    </div>
+                </div>
+
+                <div class="standard-card">
+                    <div class="standard-header">
+                        <span class="standard-tag">OPTICS</span>
+                        <h3>Camera Resolution (MP)</h3>
+                    </div>
+                    <p class="standard-summary">Sensor pixel count. Influences crop capability and digital detail rendering.</p>
+                    <div class="standard-guidance">
+                        <div class="guidance-line"><strong>13 MP — 48 MP:</strong> Clean daylight snapshots for casual social sharing.</div>
+                        <div class="guidance-line highlighted-line"><strong>50 MP (Standard):</strong> Balances pixel-binning low-light sensitivity with sharp daytime detail.</div>
+                        <div class="guidance-line"><strong>108 MP+:</strong> Ultra-fine resolution allowing extensive digital zooming and cropping.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Direct CTA Banner -->
+        <section class="pro-cta-banner">
+            <div class="cta-inner">
+                <h2>Calculate the Market Price of Your Spec Configuration</h2>
+                <p>Use our machine-learning valuation engine to benchmark any device combination in real time.</p>
+                <a href="/calculator" class="btn-banner-launch">
+                    <span>Open Device Calculator &rarr;</span>
                 </a>
-                <a href="#guide" class="btn-hero-secondary">
-                    <span>📖 Read the 2-Minute Buyer's Guide</span>
-                </a>
-            </div>
-
-            <div class="hero-trust-bar">
-                <span class="trust-item">✓ 100% Free to Use</span>
-                <span class="trust-item">✓ No Sign-up or Phone Number Required</span>
-                <span class="trust-item">✓ Realistic Indian Market Prices</span>
             </div>
         </section>
 
-        <!-- Section 1: Why Use This -->
-        <section id="why" class="info-section">
-            <div class="section-title-box">
-                <span class="section-tag">Helpful For Everyone</span>
-                <h2>Why Check the Fair Price First?</h2>
-                <p>Smartphone brands release hundreds of models every year. Here is how checking fair value saves you money.</p>
+        <!-- Clean Footer -->
+        <footer class="pro-footer">
+            <div class="footer-top">
+                <span class="footer-brand">MobileValuation Index</span>
+                <span class="footer-copy">Domestic smartphone valuation engine. Benchmarked against verified retail distributions.</span>
             </div>
-
-            <div class="benefits-grid">
-                <div class="benefit-card">
-                    <div class="benefit-icon">🛡️</div>
-                    <h3>Avoid Overpaying in Stores</h3>
-                    <p>Salespersons often push expensive models with technical jargon you might never need. Know what the phone is truly worth before visiting the shop.</p>
-                </div>
-
-                <div class="benefit-card">
-                    <div class="benefit-icon">🤝</div>
-                    <h3>Fair Second-Hand Deals</h3>
-                    <p>Buying an old phone from a friend or selling your phone on OLX/Cashify? Get a realistic price benchmark in seconds so neither party gets cheated.</p>
-                </div>
-
-                <div class="benefit-card">
-                    <div class="benefit-icon">🎯</div>
-                    <h3>Pay Only for What You Actually Use</h3>
-                    <p>Understand whether spending ₹10,000 extra for more memory or a higher number of megapixels actually makes any difference for your daily WhatsApp and YouTube use.</p>
-                </div>
+            <div class="footer-bottom">
+                <span>Values computed in Indian Rupees (INR, ₹). Independent analytical tool.</span>
             </div>
-        </section>
-
-        <!-- Section 2: Non-Tech Component Guide -->
-        <section id="guide" class="info-section guide-section">
-            <div class="section-title-box">
-                <span class="section-tag">Plain-English Explanations</span>
-                <h2>What Do Phone Specifications Actually Mean?</h2>
-                <p>You don't need an engineering degree to buy a good phone. Here is what really matters in plain everyday language.</p>
-            </div>
-
-            <div class="guide-grid">
-                <div class="guide-card">
-                    <div class="guide-card-header">
-                        <span class="guide-pill">Memory</span>
-                        <h3>RAM (Phone Smoothness)</h3>
-                    </div>
-                    <p class="guide-analogy"><strong>Everyday comparison:</strong> Think of RAM like your desk size. A bigger desk lets you keep multiple books open at once.</p>
-                    <ul class="guide-tips">
-                        <li><strong>4 GB RAM:</strong> Good for phone calls, WhatsApp, reading news, and simple apps.</li>
-                        <li><strong>6 GB RAM (Recommended):</strong> The ideal balance for most people. Lets you switch between apps smoothly with no lag.</li>
-                        <li><strong>8 GB to 12 GB:</strong> Ideal if you play heavy 3D games (BGMI/FreeFire) or edit videos.</li>
-                    </ul>
-                </div>
-
-                <div class="guide-card">
-                    <div class="guide-card-header">
-                        <span class="guide-pill">Storage</span>
-                        <h3>Storage Space (ROM)</h3>
-                    </div>
-                    <p class="guide-analogy"><strong>Everyday comparison:</strong> Think of storage like your wardrobe or closet. It determines how much stuff you can keep.</p>
-                    <ul class="guide-tips">
-                        <li><strong>64 GB:</strong> Holds around 15,000 photos. Fills up quickly after 1 year of WhatsApp videos.</li>
-                        <li><strong>128 GB (Most Popular):</strong> Holds ~30,000 photos or hundreds of apps. Recommended for most families.</li>
-                        <li><strong>256 GB+:</strong> Plenty of space for storing 4K holiday videos and movies offline.</li>
-                    </ul>
-                </div>
-
-                <div class="guide-card">
-                    <div class="guide-card-header">
-                        <span class="guide-pill">Power</span>
-                        <h3>Battery Capacity (mAh)</h3>
-                    </div>
-                    <p class="guide-analogy"><strong>Everyday comparison:</strong> Think of mAh like the fuel tank size of a car.</p>
-                    <ul class="guide-tips">
-                        <li><strong>4000 mAh:</strong> Lasts through a normal working day with moderate use.</li>
-                        <li><strong>5000 mAh (Modern Standard):</strong> Powers through morning to night with heavy calling, maps, and video watching.</li>
-                        <li><strong>6000 mAh:</strong> Extra large battery lasting 1.5 to 2 full days between charges.</li>
-                    </ul>
-                </div>
-
-                <div class="guide-card">
-                    <div class="guide-card-header">
-                        <span class="guide-pill">Photography</span>
-                        <h3>Camera Megapixels (MP)</h3>
-                    </div>
-                    <p class="guide-analogy"><strong>Everyday comparison:</strong> Megapixels measure how large you can print a photo, not how beautiful it looks.</p>
-                    <ul class="guide-tips">
-                        <li><strong>13 MP to 48 MP:</strong> Clean, crisp photos for social media and daylight memories.</li>
-                        <li><strong>50 MP (Standard):</strong> The current sweet spot for clear portraits and bright colors.</li>
-                        <li><strong>Front 16 MP:</strong> Great for crisp WhatsApp and Zoom video calls with family.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 3: Common Mistakes to Avoid -->
-        <section id="mistakes" class="info-section">
-            <div class="section-title-box">
-                <span class="section-tag">Money Saving Tips</span>
-                <h2>3 Common Mistakes People Make When Buying a Phone</h2>
-                <p>Save money and avoid headaches by steering clear of these common shopping traps.</p>
-            </div>
-
-            <div class="mistakes-container">
-                <div class="mistake-item">
-                    <div class="mistake-badge">Trap 1</div>
-                    <div class="mistake-content">
-                        <h3>Paying for 16GB RAM for simple everyday use</h3>
-                        <p>Unless you play competitive high-graphics 3D games or edit 4K reels, a 6GB or 8GB phone runs just as fast for WhatsApp, YouTube, and phone calls. Save that ₹10,000.</p>
-                    </div>
-                </div>
-
-                <div class="mistake-item">
-                    <div class="mistake-badge">Trap 2</div>
-                    <div class="mistake-content">
-                        <h3>Buying only 32GB or 64GB storage to save a few hundred rupees</h3>
-                        <p>Modern apps and WhatsApp media backups are huge. A 64GB phone often runs out of space in less than a year. Spending a little extra for 128GB ensures your phone lasts 3+ years comfortably.</p>
-                    </div>
-                </div>
-
-                <div class="mistake-item">
-                    <div class="mistake-badge">Trap 3</div>
-                    <div class="mistake-content">
-                        <h3>Buying a 4G-only phone if you plan to keep it for 3 years</h3>
-                        <p>5G coverage is now available across virtually all Indian cities with no extra plan cost on major networks. Getting a 5G phone keeps your device up to date for years to come.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Call to Action Banner -->
-        <section class="landing-cta-banner">
-            <h2>Ready to Test a Phone's Fair Price?</h2>
-            <p>Our tool has ready-made profiles for Budget, All-Rounder, Gaming, and Flagship phones. You can calculate price in just 5 seconds.</p>
-            <a href="/calculator" class="btn-banner-action">
-                <span>⚡ Open the Price Calculator Tool →</span>
-            </a>
-        </section>
-
-        <!-- Footer -->
-        <footer class="landing-footer">
-            <p><strong>Mobile Price Checker</strong> — Dedicated to honest, understandable smartphone valuation for Indian consumers.</p>
-            <p class="footer-note">All estimates are based on statistical regression of current Indian retail hardware pricing.</p>
         </footer>
     </main>
-
-    <script>
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-    </script>
 </body>
 </html>

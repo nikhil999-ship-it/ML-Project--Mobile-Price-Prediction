@@ -1,0 +1,23 @@
+model,brand,os,ram,storage,screen_size,camera,battery,listed_price,condition,price
+Samsung Galaxy A14,Samsung,Android,4 GB,128GB,6.6 inch,50 MP,5000mAh,"₹13,999",New,13999
+Redmi Note 12,Xiaomi,Android,6 GB,128 GB,6.67,48MP,5000 mAh,14999,new,14999
+iPhone 12,Apple,iOS,4GB,64 GB,6.1 inch,12 MP,2815mAh,$299,used,24999
+OnePlus Nord CE 3,OnePlus,Android,,128 GB,6.7 inch,50 MP,5000mAh,"19,999",New,19999
+Realme Narzo 60,Realme,Android,8GB,256GB,6.43,64 megapixel,5000 mAh,"₹17,999",New,17999
+Vivo V29,Vivo,Android,8 GB,256 GB,"6,78 inch",50MP,4600mAh,"₹31,999",New,31999
+Oppo A78,Oppo,Android,8GB,128GB,6.56,50 MP,5000,"18,499",New,18499
+Samsung S21 FE,Samsung,Android,8 GB,128GB,6.4 inch,,4500mAh,"₹32,999",Used,32999
+iPhone 13,Apple,iOS,4 GB,128GB,6.1,12MP,3227 mAh,$499,New,45999
+Pixel 7a,Google,Android,8GB,128 GB,6.1 inch,64 MP,4385mAh,"39,999 INR",New,39999
+Nothing Phone 1,Nothing,Android,8 GB,128GB,6.55 inch,50MP,4500 mAh,27999,New,27999
+Moto G54,Motorola,Android,8GB,128 GB,6.5,50 MP,N/A,"₹15,999",New,15999
+Poco X5 Pro,Poco,Android,6GB,128GB,6.67 inch,108 MP,5000 mAh,"₹22,999",Used,999999
+iPhone 11,Apple,iOS,4 gb,64GB,6.1 inch,12 MP,3110mAh,"₹25,999",Used,25999
+Realme C55,Realme,Android,6 GB,128 GB,6.72,64MP,5000 mAh,"11,999",New,11999
+Vivo Y36, vivo ,Android,8 GB,128GB,6.64 inch,50 MP,5000mAh,"₹16,999",New,16999
+Oppo Reno 8,Oppo,android,8GB,128GB,6.4 inch,50MP,4500 mAh,"₹28,499",Used,28499
+Samsung M34,Samsung,Android,6 GB,128GB,6.5,50 MP,6000 mAh,"₹18,999",New,18999
+OnePlus 11R,OnePlus,Android,16 GB,256 GB ,6.74 inch,50MP,5000mAh,"₹39,999",New,39999
+iPhone 14,Apple,iOS,6 GB,128GB,6.1 inch,12 MP,3279mAh,$699,New,59999
+Redmi Note 12,Xiaomi,Android,6 GB,128 GB,6.67,48MP,5000 mAh,14999,new,14999
+iPhone 13,Apple,iOS,4 GB,128GB,6.1,12MP,3227 mAh,$499,New,45999
