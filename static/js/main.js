@@ -2,6 +2,7 @@
 const profiles = {
     budget: {
         name: "Basic Daily Phone",
+        company_name: "Xiaomi",
         ram_gb: "3",
         storage_gb: "32",
         battery_mah: "5000",
@@ -14,6 +15,7 @@ const profiles = {
     },
     midrange: {
         name: "All-Rounder Phone",
+        company_name: "OnePlus",
         ram_gb: "6",
         storage_gb: "128",
         battery_mah: "5000",
@@ -26,6 +28,7 @@ const profiles = {
     },
     gaming: {
         name: "Gamer / Creator Phone",
+        company_name: "iQOO",
         ram_gb: "8",
         storage_gb: "256",
         battery_mah: "5000",
@@ -38,6 +41,7 @@ const profiles = {
     },
     flagship: {
         name: "Ultra Flagship Phone",
+        company_name: "Apple",
         ram_gb: "12",
         storage_gb: "256",
         battery_mah: "5000",
@@ -88,6 +92,9 @@ function applyPreset(type) {
     const p = profiles[type];
     if (!p) return;
 
+    if (p.company_name && document.getElementById("company_name")) {
+        document.getElementById("company_name").value = p.company_name;
+    }
     document.getElementById("ram_gb").value = p.ram_gb;
     document.getElementById("storage_gb").value = p.storage_gb;
     document.getElementById("battery_mah").value = p.battery_mah;
@@ -114,7 +121,9 @@ function setupForm() {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
+        const companyElem = document.getElementById("company_name");
         const payload = {
+            company_name: companyElem ? companyElem.value : "Samsung",
             ram_gb: parseInt(document.getElementById("ram_gb").value),
             storage_gb: parseInt(document.getElementById("storage_gb").value),
             battery_mah: parseInt(document.getElementById("battery_mah").value),
@@ -196,6 +205,41 @@ function displayResult(result, specs) {
         tierBadge.textContent = "Flagship Luxury Segment";
     }
 
+    // Display Mobile Company Information
+    if (result.company_name) {
+        const companyBox = document.getElementById("company-display-box");
+        if (companyBox) companyBox.style.display = "block";
+
+        const nameElem = document.getElementById("predicted-company-name");
+        if (nameElem) nameElem.textContent = result.company_name;
+
+        const taglineElem = document.getElementById("predicted-company-tagline");
+        if (taglineElem) taglineElem.textContent = result.company_tagline || "Verified Market Brand";
+
+        const originElem = document.getElementById("predicted-company-origin");
+        if (originElem) originElem.textContent = result.company_origin ? `Origin: ${result.company_origin}` : "Verified Match";
+
+        const modelsContainer = document.getElementById("predicted-matching-models");
+        if (modelsContainer) {
+            if (result.matching_models && result.matching_models.length > 0) {
+                modelsContainer.innerHTML = result.matching_models.map(m => `<span class="model-tag">📱 ${m}</span>`).join("");
+            } else {
+                modelsContainer.innerHTML = `<span class="model-tag">📱 Standard Series (${specs.ram_gb}GB + ${specs.storage_gb}GB)</span>`;
+            }
+        }
+
+        const altWrapper = document.getElementById("alt-brands-wrapper");
+        const altNames = document.getElementById("predicted-alt-brands");
+        if (altWrapper && altNames) {
+            if (result.alternative_companies && result.alternative_companies.length > 0) {
+                altNames.textContent = result.alternative_companies.join(", ");
+                altWrapper.style.display = "flex";
+            } else {
+                altWrapper.style.display = "none";
+            }
+        }
+    }
+
     // Set Plain English Recommendation
     const verdict = getFriendlyVerdict(specs, result.price_inr);
     document.getElementById("use-case-desc").textContent = verdict;
@@ -207,6 +251,7 @@ function displayResult(result, specs) {
     // Specifications summary chips in friendly plain language
     const chipsContainer = document.getElementById("summary-chips");
     chipsContainer.innerHTML = `
+        <div class="spec-chip">🏢 <strong>${result.company_name || 'Samsung'}</strong></div>
         <div class="spec-chip">🧠 <strong>${specs.ram_gb} GB RAM</strong> (Smoothness)</div>
         <div class="spec-chip">💾 <strong>${specs.storage_gb} GB Storage</strong> (Photos/Apps)</div>
         <div class="spec-chip">🔋 <strong>${specs.battery_mah} mAh</strong> (All-Day Battery)</div>
@@ -235,7 +280,7 @@ async function loadHistory() {
         if (!data.success || !data.records || data.records.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="10" class="empty-table-cell">No saved checks yet. Use the form above to check your first phone!</td>
+                    <td colspan="11" class="empty-table-cell">No saved checks yet. Use the form above to check your first phone!</td>
                 </tr>
             `;
             return;
@@ -251,6 +296,7 @@ async function loadHistory() {
             return `
                 <tr>
                     <td><strong>#${rec.id}</strong></td>
+                    <td><strong style="color: #0f172a; font-size: 0.88rem;">${rec.company_name || 'Samsung'}</strong></td>
                     <td><strong>${rec.ram_gb} GB</strong> / ${rec.storage_gb} GB Space</td>
                     <td>${rec.battery_mah} mAh</td>
                     <td>${rec.primary_camera_mp} MP + ${rec.front_camera_mp} MP</td>
@@ -269,7 +315,7 @@ async function loadHistory() {
     } catch (err) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="10" class="empty-table-cell" style="color: #b91c1c;">
+                <td colspan="11" class="empty-table-cell" style="color: #b91c1c;">
                     Unable to load previous checks right now.
                 </td>
             </tr>

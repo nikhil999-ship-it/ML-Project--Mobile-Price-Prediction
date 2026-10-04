@@ -68,6 +68,7 @@ def init_db():
                 cursor.execute("""
                 CREATE TABLE IF NOT EXISTS predictions (
                     id INT AUTO_INCREMENT PRIMARY KEY,
+                    company_name VARCHAR(50) NOT NULL DEFAULT 'Samsung',
                     ram_gb INT NOT NULL,
                     storage_gb INT NOT NULL,
                     battery_mah INT NOT NULL,
@@ -82,6 +83,10 @@ def init_db():
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
                 """)
+                try:
+                    cursor.execute("ALTER TABLE predictions ADD COLUMN company_name VARCHAR(50) NOT NULL DEFAULT 'Samsung';")
+                except Exception:
+                    pass
                 db_conn.commit()
                 cursor.close()
                 db_conn.close()
@@ -98,6 +103,7 @@ def init_db():
         sq_cursor.execute("""
         CREATE TABLE IF NOT EXISTS predictions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            company_name TEXT NOT NULL DEFAULT 'Samsung',
             ram_gb INTEGER NOT NULL,
             storage_gb INTEGER NOT NULL,
             battery_mah INTEGER NOT NULL,
@@ -112,6 +118,10 @@ def init_db():
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );
         """)
+        try:
+            sq_cursor.execute("ALTER TABLE predictions ADD COLUMN company_name TEXT NOT NULL DEFAULT 'Samsung';")
+        except Exception:
+            pass
         sq_conn.commit()
         sq_conn.close()
     except Exception as e:
@@ -126,6 +136,10 @@ def save_prediction(spec_data, predicted_price, price_tier):
     """
     Saves prediction to MySQL if available, or SQLite fallback.
     """
+    company_name = str(spec_data.get("company_name", "Samsung")).strip()
+    if not company_name:
+        company_name = "Samsung"
+
     # 1. Try MySQL
     mysql_conn = get_mysql_connection(with_db=True)
     if mysql_conn:
@@ -133,12 +147,13 @@ def save_prediction(spec_data, predicted_price, price_tier):
             cursor = mysql_conn.cursor()
             query = """
             INSERT INTO predictions (
-                ram_gb, storage_gb, battery_mah, primary_camera_mp,
+                company_name, ram_gb, storage_gb, battery_mah, primary_camera_mp,
                 front_camera_mp, cpu_speed_ghz, cpu_cores, screen_size_inch,
                 has_5g, predicted_price, price_tier
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
             """
             values = (
+                company_name,
                 int(spec_data["ram_gb"]),
                 int(spec_data["storage_gb"]),
                 int(spec_data["battery_mah"]),
@@ -166,12 +181,13 @@ def save_prediction(spec_data, predicted_price, price_tier):
         cursor = conn.cursor()
         query = """
         INSERT INTO predictions (
-            ram_gb, storage_gb, battery_mah, primary_camera_mp,
+            company_name, ram_gb, storage_gb, battery_mah, primary_camera_mp,
             front_camera_mp, cpu_speed_ghz, cpu_cores, screen_size_inch,
             has_5g, predicted_price, price_tier
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         """
         values = (
+            company_name,
             int(spec_data["ram_gb"]),
             int(spec_data["storage_gb"]),
             int(spec_data["battery_mah"]),
@@ -209,6 +225,8 @@ def get_all_predictions(limit=50):
             for r in records:
                 if "predicted_price" in r:
                     r["predicted_price"] = float(r["predicted_price"])
+                if not r.get("company_name"):
+                    r["company_name"] = "Samsung"
                 if "created_at" in r and r["created_at"]:
                     r["created_at"] = r["created_at"].strftime("%Y-%m-%d %H:%M:%S")
             return records
@@ -226,6 +244,8 @@ def get_all_predictions(limit=50):
         for r in records:
             if "predicted_price" in r:
                 r["predicted_price"] = float(r["predicted_price"])
+            if not r.get("company_name"):
+                r["company_name"] = "Samsung"
         return records
     except Exception as e:
         logger.error(f"Fallback select error: {e}")

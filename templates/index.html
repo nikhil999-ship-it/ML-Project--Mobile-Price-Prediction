@@ -51,6 +51,31 @@
                 </div>
 
                 <form id="prediction-form" class="spec-form compact-form">
+                    <!-- Mobile Company (Brand) Selection -->
+                    <fieldset class="form-section compact-section">
+                        <legend>Mobile Company (Brand)</legend>
+                        <div class="form-row">
+                            <div class="field-box full-width">
+                                <label for="company_name">Select Mobile Brand</label>
+                                <select id="company_name" name="company_name" required>
+                                    <option value="Any Brand">Any Brand / Best Value Match</option>
+                                    <option value="Samsung" selected>Samsung Galaxy</option>
+                                    <option value="Apple">Apple iPhone (iOS)</option>
+                                    <option value="OnePlus">OnePlus</option>
+                                    <option value="Xiaomi">Xiaomi / Redmi</option>
+                                    <option value="Realme">Realme</option>
+                                    <option value="Vivo">Vivo</option>
+                                    <option value="Oppo">Oppo</option>
+                                    <option value="Motorola">Motorola</option>
+                                    <option value="Google">Google Pixel</option>
+                                    <option value="Nothing">Nothing Phone</option>
+                                    <option value="Poco">Poco</option>
+                                    <option value="iQOO">iQOO</option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+
                     <!-- Memory & Processing -->
                     <fieldset class="form-section compact-section">
                         <legend>Memory & Speed</legend>
@@ -195,6 +220,29 @@
                     </div>
                     <div class="price-subtitle">Estimated Fair New Retail Price (Taxes included)</div>
 
+                    <!-- Prominent Mobile Company Display Card -->
+                    <div class="company-card" id="company-display-box">
+                        <div class="company-badge-header">
+                            <div class="company-icon-circle" id="company-icon-avatar">🏢</div>
+                            <div class="company-info-text">
+                                <span class="company-kicker">Mobile Company / Brand</span>
+                                <h3 class="company-name" id="predicted-company-name">Samsung Galaxy</h3>
+                                <p class="company-tagline" id="predicted-company-tagline">India's Most Trusted Android Brand</p>
+                            </div>
+                            <span class="company-origin-pill" id="predicted-company-origin">Verified Match</span>
+                        </div>
+                        <div class="company-models-wrapper">
+                            <div class="models-heading">🔥 Popular Phones From This Brand In This Price:</div>
+                            <div class="models-chips" id="predicted-matching-models">
+                                <!-- Populated dynamically by JS -->
+                            </div>
+                        </div>
+                        <div class="alt-brands-wrapper" id="alt-brands-wrapper">
+                            <span class="alt-label">Other top companies in this budget:</span>
+                            <span class="alt-names" id="predicted-alt-brands">OnePlus, Realme, Vivo</span>
+                        </div>
+                    </div>
+
                     <!-- Plain English User Recommendation -->
                     <div class="use-case-box compact-use-case" id="use-case-box">
                         <span class="use-case-icon">💡</span>
@@ -235,6 +283,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Mobile Company</th>
                             <th>Memory & Storage</th>
                             <th>Battery</th>
                             <th>Cameras</th>
@@ -248,7 +297,7 @@
                     </thead>
                     <tbody id="history-tbody">
                         <tr>
-                            <td colspan="10" class="empty-table-cell">Loading saved checks...</td>
+                            <td colspan="11" class="empty-table-cell">Loading saved checks...</td>
                         </tr>
                     </tbody>
                 </table>
