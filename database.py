@@ -8,10 +8,17 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
+if os.environ.get("VERCEL") or os.environ.get("VERCEL_ENV") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME") or os.environ.get("LAMBDA_TASK_ROOT"):
     SQLITE_PATH = "/tmp/mobile_price_db.sqlite"
 else:
-    SQLITE_PATH = os.path.join(Config.BASE_DIR, "mobile_price_db.sqlite")
+    try:
+        candidate_path = os.path.join(Config.BASE_DIR, "mobile_price_db.sqlite")
+        # Check write permissions
+        with open(candidate_path, "a"):
+            pass
+        SQLITE_PATH = candidate_path
+    except (OSError, PermissionError):
+        SQLITE_PATH = "/tmp/mobile_price_db.sqlite"
 
 def get_mysql_connection(with_db=True):
     """Attempt connecting to MySQL Server."""

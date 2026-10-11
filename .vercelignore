@@ -1,0 +1,11 @@
+.git
+.gitignore
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.env
+mobile_price_db.sqlite
+.vscode
+.idea
+*.log
