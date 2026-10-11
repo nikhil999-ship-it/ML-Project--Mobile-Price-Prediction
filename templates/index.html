@@ -51,31 +51,6 @@
                 </div>
 
                 <form id="prediction-form" class="spec-form compact-form">
-                    <!-- Mobile Company (Brand) Selection -->
-                    <fieldset class="form-section compact-section">
-                        <legend>Mobile Company (Brand)</legend>
-                        <div class="form-row">
-                            <div class="field-box full-width">
-                                <label for="company_name">Select Mobile Brand</label>
-                                <select id="company_name" name="company_name" required>
-                                    <option value="Any Brand">Any Brand / Best Value Match</option>
-                                    <option value="Samsung" selected>Samsung Galaxy</option>
-                                    <option value="Apple">Apple iPhone (iOS)</option>
-                                    <option value="OnePlus">OnePlus</option>
-                                    <option value="Xiaomi">Xiaomi / Redmi</option>
-                                    <option value="Realme">Realme</option>
-                                    <option value="Vivo">Vivo</option>
-                                    <option value="Oppo">Oppo</option>
-                                    <option value="Motorola">Motorola</option>
-                                    <option value="Google">Google Pixel</option>
-                                    <option value="Nothing">Nothing Phone</option>
-                                    <option value="Poco">Poco</option>
-                                    <option value="iQOO">iQOO</option>
-                                </select>
-                            </div>
-                        </div>
-                    </fieldset>
-
                     <!-- Memory & Processing -->
                     <fieldset class="form-section compact-section">
                         <legend>Memory & Speed</legend>
@@ -208,7 +183,7 @@
                 <div id="result-placeholder" class="empty-state compact-empty">
                     <div class="empty-illustration">🏷️</div>
                     <h3>Ready for Valuation</h3>
-                    <p>Adjust specs and tap <strong>"Calculate Fair Market Price"</strong> to see instant market value.</p>
+                    <p>Adjust specs and tap <strong>"Calculate Fair Market Price"</strong> to see instant market value and automatically predicted mobile brand.</p>
                 </div>
 
                 <div id="result-content" class="valuation-content compact-valuation" style="display: none;">
@@ -225,11 +200,15 @@
                         <div class="company-badge-header">
                             <div class="company-icon-circle" id="company-icon-avatar">🏢</div>
                             <div class="company-info-text">
-                                <span class="company-kicker">Mobile Company / Brand</span>
+                                <span class="company-kicker">🎯 Predicted Mobile Company</span>
                                 <h3 class="company-name" id="predicted-company-name">Samsung Galaxy</h3>
                                 <p class="company-tagline" id="predicted-company-tagline">India's Most Trusted Android Brand</p>
                             </div>
                             <span class="company-origin-pill" id="predicted-company-origin">Verified Match</span>
+                        </div>
+                        <div class="best-model-badge" id="predicted-best-model-wrapper">
+                            <span class="best-model-label">⭐ Closest Matching Phone:</span>
+                            <strong id="predicted-best-model">Samsung Galaxy A14</strong>
                         </div>
                         <div class="company-models-wrapper">
                             <div class="models-heading">🔥 Popular Phones From This Brand In This Price:</div>

@@ -1,6 +1,7 @@
 import os
 import joblib
 import numpy as np
+import pandas as pd
 from flask import Flask, render_template, request, jsonify
 from config import Config
 import database
@@ -8,9 +9,10 @@ import database
 app = Flask(__name__)
 app.config.from_object(Config)
 
-# Global variables for model and scaler
+# Global variables for model, scaler, and cleaned smartphone catalog
 model = None
 scaler = None
+df_catalog = None
 
 def load_ml_assets():
     global model, scaler
@@ -35,8 +37,22 @@ def load_ml_assets():
             print(f"Failed to auto-train model: {e}")
             return False
 
-# Initialize model and database
+def load_catalog_data():
+    global df_catalog
+    data_dir = getattr(Config, "DATA_DIR", os.path.join(Config.BASE_DIR, "data"))
+    catalog_path = os.path.join(data_dir, "cleaned_mobile_data.csv")
+    if os.path.exists(catalog_path):
+        try:
+            df_catalog = pd.read_csv(catalog_path)
+            print(f"Loaded {len(df_catalog)} phones into brand catalog matcher.")
+            return True
+        except Exception as e:
+            print(f"Error loading catalog data: {e}")
+    return False
+
+# Initialize model, catalog, and database
 load_ml_assets()
+load_catalog_data()
 db_ready, db_status = database.init_db()
 
 @app.route("/")
@@ -205,52 +221,107 @@ COMPANY_CATALOG = {
     }
 }
 
-def get_company_insights(selected_company, price_inr, tier_name):
-    if price_inr < 14000:
+def predict_company_and_insights(spec_dict, price_inr, tier_name, explicit_company=None):
+    global df_catalog
+    if price_inr < 15000:
         segment = "Budget"
-        top_brands = ["Xiaomi", "Realme", "Motorola", "Samsung"]
-    elif price_inr < 28000:
+        top_tier_brands = ["Xiaomi", "Realme", "Motorola", "Samsung"]
+    elif price_inr < 30000:
         segment = "Mid-Range"
-        top_brands = ["OnePlus", "Samsung", "Vivo", "Poco", "Realme"]
+        top_tier_brands = ["OnePlus", "Samsung", "Vivo", "Poco", "Realme"]
     elif price_inr < 55000:
         segment = "Premium"
-        top_brands = ["OnePlus", "Samsung", "Google", "Vivo", "Nothing"]
+        top_tier_brands = ["OnePlus", "Samsung", "Google", "Vivo", "Nothing"]
     else:
         segment = "Flagship"
-        top_brands = ["Apple", "Samsung", "Google"]
+        top_tier_brands = ["Apple", "Samsung", "Google"]
 
-    chosen = (selected_company or "").strip()
-    is_generic = False
-
-    # Match key in catalog
     matched_key = None
-    for k in COMPANY_CATALOG:
-        if k.lower() == chosen.lower() or chosen.lower() in COMPANY_CATALOG[k]["display_name"].lower():
-            matched_key = k
-            break
+    best_matching_model = None
 
+    # Check explicit company if provided (for API backward-compatibility)
+    if explicit_company and str(explicit_company).strip() and str(explicit_company).strip().lower() not in ["any", "any brand", "none"]:
+        chosen = str(explicit_company).strip()
+        for k in COMPANY_CATALOG:
+            if k.lower() == chosen.lower() or chosen.lower() in COMPANY_CATALOG[k]["display_name"].lower():
+                matched_key = k
+                break
+
+    # Automatically predict company by finding nearest matching phone in dataset
+    if not matched_key and df_catalog is not None and not df_catalog.empty:
+        try:
+            num_cols = [
+                'ram_gb', 'storage_gb', 'battery_mah', 'primary_camera_mp',
+                'front_camera_mp', 'cpu_speed_ghz', 'cpu_cores', 'screen_size_inch', 'has_5g', 'price_inr'
+            ]
+            
+            # Filter candidates based on real-world mobile platform hardware differences
+            cands = df_catalog
+            # Real hardware characteristics: Apple iPhones use 6-core chips, <=3500mAh batteries, 6.1" compact screens
+            if (
+                spec_dict.get('battery_mah', 5000) >= 4000
+                or spec_dict.get('screen_size_inch', 6.5) >= 6.4
+                or spec_dict.get('cpu_cores', 8) != 6
+                or price_inr < 24000
+            ):
+                cands = cands[cands['brand'] != 'Apple']
+            elif price_inr >= 55000 and spec_dict.get('screen_size_inch', 6.5) <= 6.2:
+                cands = cands[(cands['brand'] == 'Apple') | (cands['price_inr'] >= 35000)]
+            
+            if cands.empty:
+                cands = df_catalog
+
+            mins = df_catalog[num_cols].min()
+            maxs = df_catalog[num_cols].max()
+            diffs = (maxs - mins).replace(0, 1)
+
+            target = []
+            for c in num_cols:
+                val = price_inr if c == 'price_inr' else spec_dict.get(c, 0)
+                target.append((val - mins[c]) / diffs[c])
+            target = np.array(target)
+
+            norm_cand = (cands[num_cols] - mins) / diffs
+            weights = np.array([1.5, 1.2, 1.0, 1.2, 1.0, 1.2, 1.0, 1.0, 0.8, 2.0])
+            diff_matrix = (norm_cand.values - target) * weights
+            distances = np.linalg.norm(diff_matrix, axis=1)
+            best_idx = np.argmin(distances)
+            best_row = cands.iloc[best_idx]
+            
+            best_matching_model = str(best_row['model'])
+            raw_brand = str(best_row['brand']).strip()
+            for k in COMPANY_CATALOG:
+                if k.lower() == raw_brand.lower():
+                    matched_key = k
+                    break
+        except Exception as e:
+            print(f"Auto-prediction nearest neighbor error: {e}")
+
+    # Fallback to top segment brand if still not matched
     if not matched_key:
-        matched_key = top_brands[0]
-        is_generic = True
+        matched_key = top_tier_brands[0]
 
     cat = COMPANY_CATALOG[matched_key]
-    models = cat["models"].get(segment, [])
+    models = list(cat["models"].get(segment, []))
     if not models:
         for s in ["Mid-Range", "Budget", "Premium", "Flagship"]:
             if cat["models"].get(s):
-                models = cat["models"][s]
+                models = list(cat["models"][s])
                 break
 
-    alternatives = [COMPANY_CATALOG[b]["display_name"] for b in top_brands if b != matched_key][:3]
+    if not best_matching_model:
+        best_matching_model = models[0] if models else f"{cat['display_name']} ({segment})"
+
+    alternatives = [COMPANY_CATALOG[b]["display_name"] for b in top_tier_brands if b != matched_key][:3]
 
     return {
         "company_name": cat["display_name"],
         "badge_name": cat["badge"],
         "tagline": cat["tagline"],
         "origin": cat["origin"],
+        "best_matching_model": best_matching_model,
         "matching_models": models,
-        "alternative_companies": alternatives,
-        "is_generic": is_generic
+        "alternative_companies": alternatives
     }
 
 @app.route("/api/predict", methods=["POST"])
@@ -288,9 +359,7 @@ def predict():
         cpu_cores = int(data["cpu_cores"])
         screen_size_inch = float(data["screen_size_inch"])
         has_5g = 1 if data.get("has_5g") in [True, 1, "1", "true"] else 0
-        company_input = data.get("company_name", "Samsung")
 
-        import pandas as pd
         feature_cols = [
             "ram_gb", "storage_gb", "battery_mah", "primary_camera_mp",
             "front_camera_mp", "cpu_speed_ghz", "cpu_cores", "screen_size_inch", "has_5g"
@@ -304,23 +373,8 @@ def predict():
         pred_inr = round(float(model.predict(scaled_features)[0]))
         pred_inr = max(pred_inr, 5499)
 
-        # Apple brand premium adjustments matching retail dataset
-        if company_input and "apple" in company_input.lower():
-            if pred_inr < 35000:
-                pred_inr = max(round(pred_inr * 1.5), 24999)
-            elif pred_inr < 55000:
-                pred_inr = round(pred_inr * 1.25)
-
-        # Market Tier categorization (INR)
-        from train_model import classify_tier
-        tier = classify_tier(pred_inr)
-
-        # Determine Company Details & Recommended Models
-        company_info = get_company_insights(company_input, pred_inr, tier)
-
-        # Save to Database
+        # Prepare specification dictionary
         spec_dict = {
-            "company_name": company_info["company_name"],
             "ram_gb": ram_gb,
             "storage_gb": storage_gb,
             "battery_mah": battery_mah,
@@ -331,7 +385,25 @@ def predict():
             "screen_size_inch": screen_size_inch,
             "has_5g": has_5g
         }
-        
+
+        # Market Tier categorization (INR)
+        from train_model import classify_tier
+        tier = classify_tier(pred_inr)
+
+        # Automatically determine/predict the Mobile Company and matching phone models
+        company_input = data.get("company_name")
+        company_info = predict_company_and_insights(spec_dict, pred_inr, tier, explicit_company=company_input)
+
+        # Calibrate Apple pricing curve if Apple brand is predicted/selected
+        if "apple" in company_info["company_name"].lower():
+            if pred_inr < 35000:
+                pred_inr = max(round(pred_inr * 1.5), 24999)
+            elif pred_inr < 55000:
+                pred_inr = round(pred_inr * 1.25)
+            tier = classify_tier(pred_inr)
+
+        # Save to Database
+        spec_dict["company_name"] = company_info["company_name"]
         saved, db_info = database.save_prediction(spec_dict, pred_inr, tier)
 
         return jsonify({
@@ -342,6 +414,7 @@ def predict():
             "company_badge": company_info["badge_name"],
             "company_tagline": company_info["tagline"],
             "company_origin": company_info["origin"],
+            "best_matching_model": company_info["best_matching_model"],
             "matching_models": company_info["matching_models"],
             "alternative_companies": company_info["alternative_companies"],
             "database_saved": saved,

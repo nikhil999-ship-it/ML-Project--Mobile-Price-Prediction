@@ -92,9 +92,6 @@ function applyPreset(type) {
     const p = profiles[type];
     if (!p) return;
 
-    if (p.company_name && document.getElementById("company_name")) {
-        document.getElementById("company_name").value = p.company_name;
-    }
     document.getElementById("ram_gb").value = p.ram_gb;
     document.getElementById("storage_gb").value = p.storage_gb;
     document.getElementById("battery_mah").value = p.battery_mah;
@@ -121,9 +118,8 @@ function setupForm() {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const companyElem = document.getElementById("company_name");
+        // Hardware specification payload (brand is automatically predicted upon estimation)
         const payload = {
-            company_name: companyElem ? companyElem.value : "Samsung",
             ram_gb: parseInt(document.getElementById("ram_gb").value),
             storage_gb: parseInt(document.getElementById("storage_gb").value),
             battery_mah: parseInt(document.getElementById("battery_mah").value),
@@ -136,7 +132,7 @@ function setupForm() {
         };
 
         submitBtn.disabled = true;
-        btnLabel.textContent = "Checking Market Prices...";
+        btnLabel.textContent = "Estimating Value & Predicting Brand...";
 
         try {
             const res = await fetch("/api/predict", {
@@ -219,6 +215,17 @@ function displayResult(result, specs) {
         const originElem = document.getElementById("predicted-company-origin");
         if (originElem) originElem.textContent = result.company_origin ? `Origin: ${result.company_origin}` : "Verified Match";
 
+        const bestModelElem = document.getElementById("predicted-best-model");
+        const bestModelWrapper = document.getElementById("predicted-best-model-wrapper");
+        if (bestModelElem && bestModelWrapper) {
+            if (result.best_matching_model) {
+                bestModelElem.textContent = result.best_matching_model;
+                bestModelWrapper.style.display = "flex";
+            } else {
+                bestModelWrapper.style.display = "none";
+            }
+        }
+
         const modelsContainer = document.getElementById("predicted-matching-models");
         if (modelsContainer) {
             if (result.matching_models && result.matching_models.length > 0) {
@@ -251,7 +258,7 @@ function displayResult(result, specs) {
     // Specifications summary chips in friendly plain language
     const chipsContainer = document.getElementById("summary-chips");
     chipsContainer.innerHTML = `
-        <div class="spec-chip">🏢 <strong>${result.company_name || 'Samsung'}</strong></div>
+        <div class="spec-chip">🏢 Predicted Brand: <strong>${result.company_name || 'Verified Brand'}</strong></div>
         <div class="spec-chip">🧠 <strong>${specs.ram_gb} GB RAM</strong> (Smoothness)</div>
         <div class="spec-chip">💾 <strong>${specs.storage_gb} GB Storage</strong> (Photos/Apps)</div>
         <div class="spec-chip">🔋 <strong>${specs.battery_mah} mAh</strong> (All-Day Battery)</div>

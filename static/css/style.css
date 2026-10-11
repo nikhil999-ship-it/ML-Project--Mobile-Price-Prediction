@@ -605,6 +605,27 @@ body {
     color: var(--text-muted);
 }
 
+.best-model-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--primary-light);
+    border: 1px solid var(--primary-border);
+    color: var(--primary-hover);
+    padding: 7px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.84rem;
+    margin-bottom: 10px;
+}
+
+.best-model-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-heading);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
 .company-models-wrapper {
     background-color: var(--bg-page);
     border: 1px solid var(--border-main);
