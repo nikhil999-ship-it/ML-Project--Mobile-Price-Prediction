@@ -235,6 +235,27 @@ function displayResult(result, specs) {
             }
         }
 
+        // Render Various Mobile Companies & Models
+        const variousContainer = document.getElementById("various-brands-grid");
+        const variousBox = document.getElementById("various-companies-box");
+        if (variousContainer && variousBox) {
+            if (result.various_companies && result.various_companies.length > 0) {
+                variousContainer.innerHTML = result.various_companies.map(c => `
+                    <div class="various-brand-card">
+                        <div class="v-card-top">
+                            <span class="v-brand-name">🏢 ${c.company_name}</span>
+                            <span class="v-price-tag">${c.price_estimate}</span>
+                        </div>
+                        <div class="v-model-name">${c.model}</div>
+                        <div class="v-highlight">${c.highlight}</div>
+                    </div>
+                `).join("");
+                variousBox.style.display = "block";
+            } else {
+                variousBox.style.display = "none";
+            }
+        }
+
         const altWrapper = document.getElementById("alt-brands-wrapper");
         const altNames = document.getElementById("predicted-alt-brands");
         if (altWrapper && altNames) {

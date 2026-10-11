@@ -314,6 +314,9 @@ def predict_company_and_insights(spec_dict, price_inr, tier_name, explicit_compa
 
     alternatives = [COMPANY_CATALOG[b]["display_name"] for b in top_tier_brands if b != matched_key][:3]
 
+    # Generate various matching companies and phone models for this price and spec
+    various_companies = get_various_matching_companies(price_inr, matched_key, spec_dict)
+
     return {
         "company_name": cat["display_name"],
         "badge_name": cat["badge"],
@@ -321,8 +324,113 @@ def predict_company_and_insights(spec_dict, price_inr, tier_name, explicit_compa
         "origin": cat["origin"],
         "best_matching_model": best_matching_model,
         "matching_models": models,
-        "alternative_companies": alternatives
+        "alternative_companies": alternatives,
+        "various_companies": various_companies
     }
+
+def get_various_matching_companies(price_inr, primary_key, spec_dict):
+    offerings = {
+        'Xiaomi': {
+            'company_name': 'Xiaomi / Redmi', 'badge': 'Xiaomi',
+            'model': 'Redmi Note 12 5G' if price_inr < 18000 else ('Redmi Note 13 Pro 5G' if price_inr < 30000 else 'Xiaomi 13 Pro'),
+            'price_estimate': '₹14,999' if price_inr < 18000 else ('₹24,999' if price_inr < 30000 else '₹49,999'),
+            'highlight': 'Maximum hardware power per Rupee'
+        },
+        'Realme': {
+            'company_name': 'Realme', 'badge': 'Realme',
+            'model': 'Realme C55' if price_inr < 15000 else ('Realme Narzo 60 5G' if price_inr < 25000 else 'Realme GT 6T'),
+            'price_estimate': '₹11,999' if price_inr < 15000 else ('₹17,999' if price_inr < 25000 else '₹30,999'),
+            'highlight': 'High storage (256GB) & fast charging'
+        },
+        'Motorola': {
+            'company_name': 'Motorola', 'badge': 'Motorola',
+            'model': 'Moto G34 5G' if price_inr < 14000 else ('Moto G54 5G' if price_inr < 22000 else 'Edge 50 Pro'),
+            'price_estimate': '₹10,999' if price_inr < 14000 else ('₹15,999' if price_inr < 22000 else '₹31,999'),
+            'highlight': 'Clean stock Android & 6000mAh battery'
+        },
+        'Samsung': {
+            'company_name': 'Samsung Galaxy', 'badge': 'Samsung',
+            'model': 'Galaxy A14' if price_inr < 15000 else ('Galaxy M34 5G' if price_inr < 26000 else ('Galaxy S21 FE' if price_inr < 55000 else 'Galaxy S24 Ultra')),
+            'price_estimate': '₹13,999' if price_inr < 15000 else ('₹18,999' if price_inr < 26000 else ('₹32,999' if price_inr < 55000 else '₹1,24,999')),
+            'highlight': 'Super AMOLED display & high trust'
+        },
+        'Poco': {
+            'company_name': 'Poco', 'badge': 'Poco',
+            'model': 'Poco M6 Pro 5G' if price_inr < 15000 else ('Poco X5 Pro 5G' if price_inr < 25000 else 'Poco F6 5G'),
+            'price_estimate': '₹10,999' if price_inr < 15000 else ('₹22,999' if price_inr < 25000 else '₹29,999'),
+            'highlight': '108MP camera & gaming performance'
+        },
+        'OnePlus': {
+            'company_name': 'OnePlus', 'badge': 'OnePlus',
+            'model': 'Nord CE 3 Lite' if price_inr < 18000 else ('Nord CE 3 5G' if price_inr < 30000 else ('OnePlus 11R' if price_inr < 55000 else 'OnePlus 12')),
+            'price_estimate': '₹16,999' if price_inr < 18000 else ('₹19,999' if price_inr < 30000 else ('₹39,999' if price_inr < 55000 else '₹64,999')),
+            'highlight': 'Fast OxygenOS & Warp charging'
+        },
+        'Vivo': {
+            'company_name': 'Vivo', 'badge': 'Vivo',
+            'model': 'Vivo Y27' if price_inr < 16000 else ('Vivo T3 5G' if price_inr < 26000 else ('Vivo V29 5G' if price_inr < 55000 else 'Vivo X100 Pro')),
+            'price_estimate': '₹13,999' if price_inr < 16000 else ('₹19,999' if price_inr < 26000 else ('₹31,999' if price_inr < 55000 else '₹89,999')),
+            'highlight': 'Studio portrait cameras & sleek design'
+        },
+        'Oppo': {
+            'company_name': 'Oppo', 'badge': 'Oppo',
+            'model': 'Oppo A58' if price_inr < 15000 else ('Oppo A78 5G' if price_inr < 24000 else ('Oppo Reno 8' if price_inr < 45000 else 'Find N3 Flip')),
+            'price_estimate': '₹13,999' if price_inr < 15000 else ('₹18,499' if price_inr < 24000 else ('₹28,499' if price_inr < 45000 else '₹79,999')),
+            'highlight': '32MP selfie camera & premium finish'
+        },
+        'Nothing': {
+            'company_name': 'Nothing', 'badge': 'Nothing',
+            'model': 'CMF Phone 1' if price_inr < 18000 else ('Nothing Phone (2a)' if price_inr < 30000 else 'Nothing Phone (2)'),
+            'price_estimate': '₹15,999' if price_inr < 18000 else ('₹23,999' if price_inr < 30000 else '₹36,999'),
+            'highlight': 'Iconic transparent look & Glyph LEDs'
+        },
+        'Google': {
+            'company_name': 'Google Pixel', 'badge': 'Google',
+            'model': 'Pixel 6a' if price_inr < 28000 else ('Pixel 7a 5G' if price_inr < 50000 else 'Pixel 8 / 9 Pro'),
+            'price_estimate': '₹22,999' if price_inr < 28000 else ('₹39,999' if price_inr < 50000 else '₹74,999'),
+            'highlight': 'Pure Google AI computational photo'
+        },
+        'iQOO': {
+            'company_name': 'iQOO', 'badge': 'iQOO',
+            'model': 'iQOO Z9x' if price_inr < 16000 else ('iQOO Z9 5G' if price_inr < 26000 else ('iQOO Neo 9 Pro' if price_inr < 50000 else 'iQOO 12')),
+            'price_estimate': '₹12,999' if price_inr < 16000 else ('₹19,999' if price_inr < 26000 else ('₹34,999' if price_inr < 50000 else '₹52,999')),
+            'highlight': 'High benchmark scores & gaming frame rates'
+        },
+        'Apple': {
+            'company_name': 'Apple iPhone', 'badge': 'Apple',
+            'model': 'iPhone 11 (Used)' if price_inr < 30000 else ('iPhone 12 / 13' if price_inr < 50000 else ('iPhone 14 / 15' if price_inr < 80000 else 'iPhone 16 Pro')),
+            'price_estimate': '₹24,999' if price_inr < 30000 else ('₹45,999' if price_inr < 50000 else ('₹59,999' if price_inr < 80000 else '₹1,19,999')),
+            'highlight': 'Apple iOS ecosystem & highest resale'
+        }
+    }
+
+    if price_inr < 16000:
+        tier_keys = ['Xiaomi', 'Realme', 'Motorola', 'Samsung', 'Poco', 'Vivo']
+    elif price_inr < 30000:
+        if spec_dict.get('battery_mah', 0) >= 6000:
+            tier_keys = ['Motorola', 'Samsung', 'OnePlus', 'Realme', 'Poco']
+        elif spec_dict.get('primary_camera_mp', 0) >= 108:
+            tier_keys = ['Poco', 'Realme', 'OnePlus', 'Xiaomi', 'Motorola']
+        elif spec_dict.get('front_camera_mp', 0) >= 32:
+            tier_keys = ['Vivo', 'Oppo', 'OnePlus', 'Samsung', 'Realme']
+        elif spec_dict.get('storage_gb', 0) >= 256:
+            tier_keys = ['Realme', 'OnePlus', 'Vivo', 'Poco', 'Samsung']
+        else:
+            tier_keys = ['OnePlus', 'Poco', 'Motorola', 'Realme', 'Samsung', 'Vivo', 'Nothing', 'iQOO', 'Oppo']
+    elif price_inr < 55000:
+        tier_keys = ['OnePlus', 'Samsung', 'Google', 'Vivo', 'Nothing', 'iQOO', 'Apple', 'Realme']
+    else:
+        tier_keys = ['Apple', 'Samsung', 'Google', 'OnePlus', 'Xiaomi', 'Vivo']
+
+    selected = []
+    if primary_key in offerings and primary_key in tier_keys:
+        selected.append(primary_key)
+
+    for k in tier_keys:
+        if k not in selected and len(selected) < 5:
+            selected.append(k)
+
+    return [offerings[k] for k in selected]
 
 @app.route("/api/predict", methods=["POST"])
 def predict():
@@ -417,6 +525,7 @@ def predict():
             "best_matching_model": company_info["best_matching_model"],
             "matching_models": company_info["matching_models"],
             "alternative_companies": company_info["alternative_companies"],
+            "various_companies": company_info.get("various_companies", []),
             "database_saved": saved,
             "database_message": db_info if not saved else "Prediction saved to database."
         })
